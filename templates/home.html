@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="gallerycontainer text-center">
+<h1>MTG Collection</h1>
+
+
+<form method="post">
+
+  <label for="Search">Search: </label>
+  <input type="text" name="searchid">
+  <input type="submit" value="Search">
+</form><br>
+
+
+{% if data is defined %}
+<table border=1 class="center">
+  <tr>
+    <th>Name</th>
+    <th>Mana Cost</th>
+    <th>Type</th>
+    <th>Card Text</th>
+  </tr>
+{% for card in data %}
+<tr>
+  <td>{{card['name']}}</td>
+  <td>{{card['mana_cost']}}</td>
+  <td>{{card['type_line']}}</td>
+  <td>{{card['oracle_text']}}</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+
+</div>
+{% endblock %}
