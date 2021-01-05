@@ -15,7 +15,7 @@
 
 
 {% if data is defined %}
-<table border=1 class="center">
+<table border=1 class="center" width=100%>
   <tr>
     <th>Name</th>
     <th>Mana Cost</th>
@@ -25,9 +25,25 @@
 {% for card in data %}
 <tr>
   <td>{{card['name']}}</td>
-  <td>{{card['mana_cost']}}</td>
+  <td>
+
+    {% set cost = card['mana_cost'].replace('{','') %}
+    {% set cost = cost.split('}') %}
+    {% for mana in cost %}
+    {% if mana == "" %}
+    {% else %}
+    {% if mana|int(-1) != -1 %}
+    {{mana}}
+    {% else %}
+    <img src=static/img/{{mana}}.png>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+
+  </td>
   <td>{{card['type_line']}}</td>
   <td>{{card['oracle_text']}}</td>
+
 </tr>
 {% endfor %}
 </table>
