@@ -15,15 +15,20 @@
 
 
 {% if data is defined %}
-<table border=1 class="center" width=100%>
+<ul>
+<table border=1 class="center" width=80%>
   <tr>
+    <th>Image</th>
     <th>Name</th>
     <th>Mana Cost</th>
     <th>Type</th>
     <th>Card Text</th>
+    <th>Price</th>
   </tr>
 {% for card in data %}
+
 <tr>
+  <td><img src="{{card['image_uris']['small']}}"></td>
   <td>{{card['name']}}</td>
   <td>
 
@@ -43,10 +48,13 @@
   </td>
   <td>{{card['type_line']}}</td>
   <td>{{card['oracle_text']}}</td>
+  <td>${{card['prices']['usd']}}</td>
+  <td><a href="/add/{{card['id']}}">Add to Collection</a></td>
 
 </tr>
 {% endfor %}
 </table>
+</ul>
 {% endif %}
 
 </div>
