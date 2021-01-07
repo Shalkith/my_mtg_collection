@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="gallerycontainer text-center">
+<h1>MTG Collection</h1>
+
+<h5><a href="/">return to search</a></h5>
+
+
+
+{% if data is defined %}
+<table>
+  <tr>
+    <th>Image</th>
+    <th>Name</th>
+    <th>Mana Cost</th>
+    <th>Type</th>
+    <th>Card Text</th>
+    <th>Quantity</th>
+  </tr>
+
+{%for card in data%}
+
+  <tr>
+    <td><a href="{{card[6]}}"><img src="{{card[7]}}"></a></td>
+    <td>{{card[2]}}</td>
+    <td>
+        {% set cost = card[3].replace('{','') %}
+        {% set cost = cost.split('}') %}
+        {% for mana in cost %}
+        {% if mana == "" %}
+        {% else %}
+        {% if mana|int(-1) != -1 %}
+        {{mana}}
+        {% else %}
+        <img src=static/img/{{mana}}.png>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </td>
+
+
+    <td>{{card[4]}}</td>
+    <td>{{card[5]}}</td>
+    <td>{{card[8]}}<br><a href="/change/{{card[1]}}/{{card[8]-1}}">Remove</a> | <a href="/change/{{card[1]}}/{{card[8]+1}}">Add</a></td>
+  </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+
+
+</div>
+{% endblock %}
