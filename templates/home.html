@@ -13,6 +13,7 @@
   <input type="submit" value="Search">
 </form><br>
 
+{{owners}}
 
 {% if data is defined %}
 <ul>
@@ -49,7 +50,24 @@
   <td>{{card['type_line']}}</td>
   <td>{{card['oracle_text']}}</td>
   <td>${{card['prices']['usd']}}</td>
-  <td><a href="/add/{{card['id']}}">Add to Collection</a></td>
+
+
+  <td>
+
+    <form method="post" action="/add/{{card['id']}}">
+      <label for="user">Add to:</label>
+      <select id="user" name="user" required>
+      <option value="">-Select User-</option>
+{% for owner in owners %}
+        <option value="{{owner[0]}}">{{owner[0]}}</option>
+{% endfor %}
+
+      </select>
+      <input type="submit">
+    </form>
+
+
+  </td>
 
 </tr>
 {% endfor %}
