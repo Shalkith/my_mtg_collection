@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="gallerycontainer text-center">
+<h1>MTG Collection - Owner Manager</h1>
+
+
+<form method="post">
+
+  <label for="Search">Owner Name: </label>
+  <input type="text" name="ownername">
+  <input type="submit" value="Create User">
+</form><br>
+
+
+{% if data is defined %}
+<ul>
+<table border=1 class="center" width=80%>
+  <tr>
+    <th>Name</th>
+  </tr>
+{% for Owner in data %}
+
+<tr>
+  <td><a href="mycards{{Owner[0]}}">{{Owner[0]}}<a/></td>
+
+</tr>
+{% endfor %}
+</table>
+</ul>
+{% endif %}
+
+</div>
+{% endblock %}
