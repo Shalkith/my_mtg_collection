@@ -27,7 +27,7 @@ def query_db(query):
     return response
 
 
-def create_db():
+def create_collection_table():
     conn = sqlite3.connect('collection_db.db')
     c = conn.cursor()
     query = '''CREATE TABLE IF NOT EXISTS mtg_collection
@@ -44,3 +44,51 @@ def create_db():
     c.execute(query)
     conn.commit()
     conn.close()
+
+def create_owners_table():
+    conn = sqlite3.connect('collection_db.db')
+    c = conn.cursor()
+    query = '''CREATE TABLE IF NOT EXISTS owners
+        (ownername blob)
+        '''
+    c.execute(query)
+    conn.commit()
+    conn.close()
+
+def create_decks_table():
+    conn = sqlite3.connect('collection_db.db')
+    c = conn.cursor()
+    query = '''CREATE TABLE IF NOT EXISTS decks
+        (deckname blob,
+        owner blob)
+        '''
+    c.execute(query)
+    conn.commit()
+    conn.close()
+
+def get_decks():
+    conn = sqlite3.connect('collection_db.db')
+    c = conn.cursor()
+    query = '''select * from decks
+        '''
+    c.execute(query)
+    response = []
+    for row in c:
+        response.append(row)
+    conn.commit()
+    conn.close()
+    return response
+
+def get_owners():
+    conn = sqlite3.connect('collection_db.db')
+    c = conn.cursor()
+    query = '''select * from owners
+        '''
+    c.execute(query)
+    response = []
+    for row in c:
+        response.append(row)
+    conn.commit()
+    conn.close()
+    return response
+
