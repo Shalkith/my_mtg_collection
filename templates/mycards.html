@@ -5,7 +5,6 @@
 <div class="gallerycontainer text-center">
 <h1>MTG Collection</h1>
 
-<h5><a href="/">return to search</a></h5>
 
 
 
@@ -43,7 +42,7 @@
 
     <td>{{card[4]}}</td>
     <td>{{card[5]}}</td>
-    <td>{{card[8]}}<br><a href="/change/{{card[1]}}/{{card[8]-1}}">Remove</a> | <a href="/change/{{card[1]}}/{{card[8]+1}}">Add</a></td>
+    <td>{{card[8]}}<br><a href="/change/{{user}}/{{card[1]}}/{{card[8]-1}}">Remove</a> | <a href="/change/{{user}}/{{card[1]}}/{{card[8]+1}}">Add</a></td>
   </tr>
 {% endfor %}
 </table>
