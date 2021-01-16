@@ -5,7 +5,6 @@ import requests
 def search(data):
     url = 'https://api.scryfall.com'
     search = '/cards/search'
-    query = '?q="Akroma"&unique=art'
     data = requests.get(url+search+'?q="'+data+'"&unique=art')
     return data
 
