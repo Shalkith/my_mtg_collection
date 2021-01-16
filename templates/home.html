@@ -2,76 +2,113 @@
 
 {% block body %}
 
-<div class="gallerycontainer text-center">
-<h1>MTG Collection</h1>
 
 
-<form method="post">
 
-  <label for="Search">Search: </label>
-  <input type="text" name="searchid">
-  <input type="submit" value="Search">
-</form><br>
 
-{{owners}}
 
+
+{{message}}
 {% if data is defined %}
+<h1>Search Results</h1>
 <ul>
-<table border=1 class="center" width=80%>
-  <tr>
-    <th>Image</th>
-    <th>Name</th>
-    <th>Mana Cost</th>
-    <th>Type</th>
-    <th>Card Text</th>
-    <th>Price</th>
-  </tr>
+
 {% for card in data %}
 
-<tr>
-  <td><img src="{{card['image_uris']['small']}}"></td>
-  <td>{{card['name']}}</td>
-  <td>
 
-    {% set cost = card['mana_cost'].replace('{','') %}
-    {% set cost = cost.split('}') %}
-    {% for mana in cost %}
-    {% if mana == "" %}
-    {% else %}
-    {% if mana|int(-1) != -1 %}
-    {{mana}}
-    {% else %}
-    <img src=static/img/{{mana}}.png>
-    {% endif %}
-    {% endif %}
-    {% endfor %}
-
-  </td>
-  <td>{{card['type_line']}}</td>
-  <td>{{card['oracle_text']}}</td>
-  <td>${{card['prices']['usd']}}</td>
+<div class="grid-x">
+  <div class="cell small-2">
+      <a href="{{card['image_uris']['normal']}}"><img src="{{card['image_uris']['small']}}"></a>
+  </div>
 
 
-  <td>
+  <div class="cell small-4">
 
-    <form method="post" action="/add/{{card['id']}}">
-      <label for="user">Add to:</label>
-      <select id="user" name="user" required>
-      <option value="">-Select User-</option>
-{% for owner in owners %}
-        <option value="{{owner[0]}}">{{owner[0]}}</option>
+      {% set text = card['oracle_text'].replace('{','') %}
+      {% set text = card['oracle_text'] %}
+
+      {% for i in text.split('{') %}
+             {% for words in i.split('}') %}
+             {% if words == "" %}
+             {% else %}
+             {% if words|int(-1) != -1 %}
+             {{words}}
+             {% elif ":" in words %}
+             {{words}}
+             {% elif words|length > 1 %}
+             {{words}}
+             {% else %}
+             <img src=static/img/{{words}}.png>
+             {% endif %}
+             {% endif %}
+             {% endfor %}
+      {% endfor %}
+
+
+  </div>
+
+  <div class="cell small-6">
+      <div class="grid-x">
+        <div class="cell small-6">
+          Card Name: {{card['name']}}
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-6">Mana Cost:
+          {% set cost = card['mana_cost'].replace('{','') %}
+          {% set cost = cost.split('}') %}
+          {% for mana in cost %}
+          {% if mana == "" %}
+          {% else %}
+          {% if mana|int(-1) != -1 %}
+          {{mana}}
+          {% else %}
+          <img src=static/img/{{mana}}.png>
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-6">
+          Type: {{card['type_line']}}
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-6">
+          Price: ${{card['prices']['usd']}}
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-6">
+
+          <form method="post" action="/add/{{card['id']}}">
+            <label for="user">Add to:</label>
+            <select id="user" name="user" required>
+            <option value="">-Select User-</option>
+      {% for owner in owners %}
+              <option value="{{owner[0]}}">{{owner[0]}}</option>
+      {% endfor %}
+
+            </select>
+            <input type="submit" value="Add card" class="button">
+          </form>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
 {% endfor %}
-
-      </select>
-      <input type="submit">
-    </form>
-
-
-  </td>
-
-</tr>
-{% endfor %}
-</table>
 </ul>
 {% endif %}
 
