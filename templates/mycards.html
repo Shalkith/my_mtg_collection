@@ -3,49 +3,93 @@
 {% block body %}
 
 <div class="gallerycontainer text-center">
-<h1>MTG Collection</h1>
+<h1>{{user}}'s Cards</h1>
 
 
 
 
 {% if data is defined %}
-<table>
-  <tr>
-    <th>Image</th>
-    <th>Name</th>
-    <th>Mana Cost</th>
-    <th>Type</th>
-    <th>Card Text</th>
-    <th>Quantity</th>
-  </tr>
 
 {%for card in data%}
 
-  <tr>
-    <td><a href="{{card[6]}}"><img src="{{card[7]}}"></a></td>
-    <td>{{card[2]}}</td>
-    <td>
-        {% set cost = card[3].replace('{','') %}
-        {% set cost = cost.split('}') %}
-        {% for mana in cost %}
-        {% if mana == "" %}
-        {% else %}
-        {% if mana|int(-1) != -1 %}
-        {{mana}}
-        {% else %}
-        <img src=static/img/{{mana}}.png>
-        {% endif %}
-        {% endif %}
-        {% endfor %}
-    </td>
 
 
-    <td>{{card[4]}}</td>
-    <td>{{card[5]}}</td>
-    <td>{{card[8]}}<br><a href="/change/{{user}}/{{card[1]}}/{{card[8]-1}}">Remove</a> | <a href="/change/{{user}}/{{card[1]}}/{{card[8]+1}}">Add</a></td>
-  </tr>
+
+<div class="grid-x">
+  <div class="cell small-2">
+      <a href="{{card[6]}}"><img src="{{card[7]}}"></a>
+  </div>
+
+
+  <div class="cell small-4">
+
+    {% for i in card[5].split('{') %}
+           {% for words in i.split('}') %}
+           {% if words == "" %}
+           {% else %}
+           {% if words|int(-1) != -1 %}
+           {{words}}
+           {% elif ":" in words %}
+           {{words}}
+           {% elif words|length > 1 %}
+           {{words}}
+           {% else %}
+           <img src=static/img/{{words}}.png>
+           {% endif %}
+           {% endif %}
+           {% endfor %}
+    {% endfor %}
+
+
+  </div>
+
+  <div class="cell small-6">
+      <div class="grid-x">
+        <div class="cell small-6">
+          Card Name: {{card[2]}}
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-6">Mana Cost:
+          {% set cost = card[3].replace('{','') %}
+          {% set cost = cost.split('}') %}
+          {% for mana in cost %}
+          {% if mana == "" %}
+          {% else %}
+          {% if mana|int(-1) != -1 %}
+          {{mana}}
+          {% else %}
+          <img src=static/img/{{mana}}.png>
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-6">
+          Type: {{card[4]}}
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-6">
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-6">
+          <h1>{{card[8]}}<br></h1>
+            <a class="button" href="/change/{{user}}/{{card[1]}}/{{card[8]-1}}">Remove</a>
+            <a class="button" href="/change/{{user}}/{{card[1]}}/{{card[8]+1}}">Add</a></td>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
 {% endfor %}
-</table>
 {% endif %}
 
 
