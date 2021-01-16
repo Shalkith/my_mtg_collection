@@ -49,7 +49,7 @@ def create_owners_table():
     conn = sqlite3.connect('collection_db.db')
     c = conn.cursor()
     query = '''CREATE TABLE IF NOT EXISTS owners
-        (ownername blob)
+        (ownername blob UNIQUE)
         '''
     c.execute(query)
     conn.commit()
@@ -82,7 +82,7 @@ def get_decks():
 def get_owners():
     conn = sqlite3.connect('collection_db.db')
     c = conn.cursor()
-    query = '''select * from owners
+    query = '''select * from owners order by lower(ownername) asc
         '''
     c.execute(query)
     response = []
@@ -91,4 +91,3 @@ def get_owners():
     conn.commit()
     conn.close()
     return response
-
