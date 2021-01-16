@@ -3,27 +3,31 @@
 {% block body %}
 
 <div class="gallerycontainer text-center">
-<h1>MTG Collection - Owner Manager</h1>
+<h1>Users</h1>
 
 
-<form method="post">
 
-  <label for="Search">Owner Name: </label>
-  <input type="text" name="ownername">
-  <input type="submit" value="Create User">
-</form><br>
-
+{{message}}
 
 {% if data is defined %}
 <ul>
 <table border=1 class="center" width=80%>
   <tr>
     <th>Name</th>
+    <th>Actions</th>
   </tr>
+  <form method="post">
+  <tr>
+    <td><input type="text" name="ownername" required></td>
+    <td><input type="submit" class="button" value="Create User"></td>
+
+  </tr>
+</form>
 {% for Owner in data %}
 
 <tr>
   <td><a href="mycards{{Owner[0]}}">{{Owner[0]}}<a/></td>
+  <td><a class="button" href="delete{{Owner[0]}}">Delete - {{Owner[0]}}</a></td>
 
 </tr>
 {% endfor %}
