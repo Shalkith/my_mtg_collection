@@ -35,6 +35,14 @@ def removecard(user,id,qty):
     db_manager.query_db(query)
     return redirect(url_for('mycards',user=user))
 
+@app.route('/delete<user>')
+def removeuser(user):
+    query = 'delete from owners where ownername = "%s"' % (user)
+    db_manager.query_db(query)
+    owners = db_manager.get_owners()
+    message=""
+    return redirect(url_for('manageowners', data=owners, message = message))
+
 
 @app.route('/manageowners', methods=['GET','POST'])
 def manageowners():
@@ -42,11 +50,18 @@ def manageowners():
     if request.method == 'POST':
         data = request.form.get('ownername')
         print('DATA',data)
+        message = ""
 
-        db_manager.query_db('insert into owners values("%s")' % (data))
+        try:
+            db_manager.query_db('insert into owners values("%s")' % (data))
+        except Exception as e:
+            if "UNIQUE constraint failed: owners.ownername" in str(e):
+                message = "Name already exists, please try another name"
+            else:
+                message = 'An unknown error has occured. Please check with the Admin'
         owners = db_manager.get_owners()
 
-        return render_template('owners.html', data=owners)
+        return render_template('owners.html', data=owners, message = message)
 
     else:
         owners = db_manager.get_owners()
@@ -61,16 +76,18 @@ def home():
     if request.method == 'POST':
         print(request)
         data = request.form.get('searchid')
-        print('DATA',data)
         data = scryfall.search(data)
-        data = data.json()
-        data=data['data']
-        for x in data[0]:
-            print(x)
+        message = ""
+        if '404' in str(data):
+            data=""
+            message = "No results found"
+        else:
+            data = data.json()
+            data=data['data']
 
         owners = db_manager.get_owners()
 
-        return render_template('home.html', data=data, owners=owners)
+        return render_template('home.html', data=data, owners=owners, message=message)
 
     else:
 
